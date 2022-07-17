@@ -1,0 +1,5 @@
+.direnv
+.terraform
+terraform.tfstate*
+terraform.tfstate.d
+result
