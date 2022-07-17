@@ -16,7 +16,17 @@
     , nixos-generators, ... }:
     let platforms = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
     in {
-      overlays.inputs = final: prev: { inherit inputs; };
+      overlays = {
+        inputs = final: prev: { inherit inputs; };
+        samba-ad-dc = (final: prev: {
+          # Rebuild Samba with LDAP, MDNS and Domain Controller support
+          samba = prev.samba.override {
+            enableLDAP = true;
+            enableMDNS = true;
+            enableDomainController = true;
+          };
+        });
+      };
     } // inputs.flake-utils.lib.eachSystem platforms (system:
       let
         pkgs = import nixpkgs {
@@ -60,11 +70,32 @@
         };
       };}) // (let
         systems = {
-          proxmox = rec {
+          otakudc = rec {
             system = "x86_64-linux";
             modules = [
-              ./proxmox/configuration.nix
-              sops-nix.nixosModules.sops
+              ./otakudc/configuration.nix
+              {
+                config.env = {
+                  activeDirectory = {
+                    domain = "otakulan.net";
+                    workgroup = "OTAKULAN";
+                    netbiosName = "OTAKUDC";
+                  };
+                  # Samba runs its own DNS server on the static IP
+                  # which pfSense distributes to clients. This allows
+                  # resolving names in active directory. We then forward
+                  # down the chain to the dns server below (the lan cache
+                  # dns) which intercepts CDNs. Finally, that server
+                  # forwards upstream.
+                  # Set to a test ip, will need to be changed to the
+                  # lancache dns server
+                  # dnsServer = "172.16.2.2";
+                  dnsServer = "172.17.51.1";
+                  # staticIpv4 = "172.16.2.3";
+                  staticIpv4 = "172.17.51.242";
+                  ipv4DefaultDateway = "172.17.51.1";
+                };
+              }
             ];
             pkgs = import nixpkgs {
               inherit system;
@@ -77,7 +108,6 @@
 
         inherit (nixpkgs) lib;
 
-        # todo: clean this away into a function
         combine = a: b: a // b;
         combineAll = list: builtins.foldl' combine { } list;
         allAttrNames = list: builtins.attrNames (combineAll list);
@@ -90,14 +120,14 @@
         generateNixosSystems = builtins.mapAttrs (name: system:
           lib.nixosSystem {
             system = system.system;
-            modules = system.modules;
+            modules = system.modules ++ [ ./common.nix ];
             pkgs = system.pkgs;
           });
 
         generateVmImages = systems:
           lib.mapAttrsToList (name: system: {
             ${system.system}.${name} = (nixos-generators.nixosGenerate {
-              modules = system.modules;
+              modules = system.modules ++ [ ./common.nix ];
               pkgs = system.pkgs;
               format = system.format;
             });
