@@ -80,3 +80,37 @@ otakudc# samba-tool dns delete localhost otakulan.net otakudc AAAA 2001:0470:b08
 Password for [OTAKULAN\tristan]:
 Record deleted successfully
 ```
+
+## Deploying the LAN content cache
+
+1. Adjust `config.env` for the `lancache` `system` defined in `flake.nix`. Make sure `dnsServer`, `staticIpv4` and `ipv4DefaultDateway` are set to the expected values (to come).
+2. Run `nix build .#lancache`
+3. Verify that the disk image is created in `result/nixos-system-x86_64-linux.tar.xz`
+4. Adjust the ip address/hostname of the deployed containers created in the `flake.nix` file in the root of the repo (should be the same value as `config.env.staticIpv4` or a dns hostname pointing to that address).
+5. In the proxmox web interface, select your storage volume in the left pane and select "CT Templates", then click "Upload".
+6. Browse to the aformentioned `nixos-system-x86_64-linux.tar.xz` and upload it to the server.
+7. Create a new container using the "Create CT" button at the top right. Follow the wizard and set the resources according to the container's needs. Ignore any networking configuration and leave it as-is. Make sure "Unprivileged Container" and "Nesting" are checked.
+8. Before starting the container, select it from the left pane, then click "Options", edit "Features" and check "FUSE". Then, edit "Console mode" and set it to "/dev/console.
+9. SSH into the container and create the folders for the cache using `mkdir /cache/{data,logs}`.
+10. Apply changes to the configuration using `deploy-rs`. To deply `lancache`, run `deploy .#lancache`.
+
+## Troubleshooting
+
+When running `deploy-rs` on a freshly-deployed contianer on proxmox, the first run will fail with this nondescript error:
+```
+WARNING: /boot being on a different filesystem not supported by init-script-builder.sh
+stat: cannot read file system information for '/boot': No such file or directory
+no introspection data available for method 'ListUnitsByPatterns' in object '/org/freedesktop/systemd1', and object is not cast to any interface at /nix/store/i9kaw2m3zcaqasin9z714dqiy044ipz9-perl-5.34.1-env/lib/perl5/site_perl/5.34.1/x86_64-linux-thread-multi/Net/DBus/RemoteObject.pm line 467.
+⭐ ⚠️ [activate] [WARN] De-activating due to error
+```
+To fix this, you must scroll up in the log and find the path to the profile being deployed, it looks something like this:
+```
+🚀 ℹ️ [deploy] [INFO] The following profiles are going to be deployed:
+[lancache.system]
+user = "root"
+ssh_user = "root"
+path = "/nix/store/d9640wg9cic4acyis6y1f9whfmyqp1qm-activatable-nixos-system-lancache-22.11.20220712.0906692"
+hostname = "172.17.51.249"
+ssh_opts = []
+```
+Then, `ssh` into the container and run `<path>/bin/switch-to-configuration boot` and then run `reboot` to reboot the container. Subsequent deploys will work without a hitch. I have no idea what causes this, I will need to file an upstream bug.

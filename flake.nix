@@ -104,6 +104,29 @@
             hostname = "172.17.51.242";
             format = "proxmox-lxc";
           };
+          lancache = rec {
+            system = "x86_64-linux";
+            modules = [
+              ./lancache/configuration.nix
+              {
+                config.env = {
+                  # Set to a test ip, will need to be changed to the
+                  # lancache dns server
+                  # dnsServer = "172.16.2.2";
+                  dnsServer = "172.17.51.1";
+                  # staticIpv4 = "172.16.2.2";
+                  staticIpv4 = "172.17.51.249";
+                  ipv4DefaultDateway = "172.17.51.1";
+                };
+              }
+            ];
+            pkgs = import nixpkgs {
+              inherit system;
+              overlays = builtins.attrValues self.overlays;
+            };
+            hostname = "172.17.51.249";
+            format = "proxmox-lxc";
+          };
         };
 
         inherit (nixpkgs) lib;
