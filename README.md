@@ -36,7 +36,13 @@
 2. Run `nix build .#otakudc`
 3. Verify that the disk image is created in `result/nixos.tar.xz`
 4. Adjust the ip address/hostname of the deployed containers created in the `flake.nix` file in the root of the repo (should be the same value as `config.env.staticIpv4` or a dns hostname pointing to that address).
-5. Apply changes to the configuration using `deploy-rs`. To deply `otakudc`, run `deploy .#otakudc`.
+5. In the proxmox web interface, select your storage volume in the left pane and select "CT Templates", then click "Upload".
+6. Browse to the aformentioned `nixos-system-x86_64-linux.tar.xz` and upload it to the server.
+7. Create a new container using the "Create CT" button at the top right. Follow the wizard and set the resources according to the container's needs. Ignore any networking configuration and leave it as-is. Make sure "Unprivileged Container" is unchecked and "Nesting" is checked.
+8. Before starting the container, select it from the left pane, then click "Options", edit "Features" and check "NFS". Then, edit "Console mode" and set it to "/dev/console.
+9. Copy an existing samba active directory configuration into `/var/lib/samba` or initialize a new one using `samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass=Passw0rd`.
+10. REstart samba with `systemctl restart samba`.
+11. Apply changes to the configuration using `deploy-rs`. To deply `otakudc`, run `deploy .#otakudc`.
 
 ## Administering the active directory domain (on otakudc)
 
