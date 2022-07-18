@@ -87,13 +87,12 @@
                   # down the chain to the dns server below (the lan cache
                   # dns) which intercepts CDNs. Finally, that server
                   # forwards upstream.
-                  # Set to a test ip, will need to be changed to the
-                  # lancache dns server
-                  # dnsServer = "172.16.2.2";
-                  dnsServer = "172.17.51.1";
-                  # staticIpv4 = "172.16.2.3";
-                  staticIpv4 = "172.17.51.242";
-                  ipv4DefaultDateway = "172.17.51.1";
+                  dnsServer = "172.16.2.2";
+                  staticIpv4 = "172.16.2.3";
+                  # Default gateway not set since we will use the one 
+                  # provided via DHCP on the development interface
+                  # ipv4DefaultDateway = "172.16.2.1";
+                  enableDevelopmentNetworkInterface = true;
                 };
               }
             ];
@@ -101,7 +100,8 @@
               inherit system;
               overlays = builtins.attrValues self.overlays;
             };
-            hostname = "172.17.51.242";
+            # hostname = "172.16.2.3";
+            hostname = "172.17.51.252";
             magicRollback = true; # set to false when changing net config
             format = "proxmox-lxc";
           };
@@ -113,11 +113,13 @@
                 config.env = {
                   # Set to a test ip, will need to be changed to the
                   # lancache dns server
-                  # dnsServer = "172.16.2.2";
+                  # dnsServer = "172.16.2.1";
                   dnsServer = "172.17.51.1";
-                  # staticIpv4 = "172.16.2.2";
-                  staticIpv4 = "172.17.51.249";
-                  ipv4DefaultDateway = "172.17.51.1";
+                  staticIpv4 = "172.16.2.2";
+                  # Default gateway not set since we will use the one 
+                  # provided via DHCP on the development interface
+                  # ipv4DefaultDateway = "172.16.2.1";
+                  enableDevelopmentNetworkInterface = true;
                 };
               }
             ];
@@ -125,7 +127,8 @@
               inherit system;
               overlays = builtins.attrValues self.overlays;
             };
-            hostname = "172.17.51.249";
+            # hostname = "172.16.2.2";
+            hostname = "172.17.51.251";
             magicRollback = true; # set to false when changing net config
             format = "proxmox-lxc";
           };

@@ -24,19 +24,47 @@ in {
       type = types.str;
     };
     ipv4DefaultDateway = mkOption {
-      type = types.str;
+      type = types.nullOr types.str;
+      default = null;
     };
+    enableDevelopmentNetworkInterface = mkEnableOption "DevelopmentNetworkInterface";
   };
 
-  config.networking.interfaces.eth0.ipv4.addresses = [ {
-    address = cfg.staticIpv4;
-    prefixLength = 24;
-  } ];
+  config = {
+    assertions = [{
+      assertion = (
+        (cfg.enableDevelopmentNetworkInterface == true -> cfg.ipv4DefaultDateway == null) &&
+        (cfg.enableDevelopmentNetworkInterface == false -> cfg.ipv4DefaultDateway != null)
+      );
+      message  = ''
+        Please specify either
+        'env.enableDevelopmentNetworkInterface' or
+        'env.ipv4DefaultDateway'.
+      '';
+    }];
 
-  config.networking.defaultGateway = cfg.ipv4DefaultDateway;
+    boot.cleanTmpDir = true;
+    networking.firewall.allowPing = true;
+    networking.firewall.logRefusedConnections = false;
+    services.openssh.enable = true;
 
-  config.networking.nameservers = [ cfg.dnsServer ];
+    programs.zsh.enable = true;
+    users.defaultUserShell = pkgs.zsh;
 
-  config.users.users.root.openssh.authorizedKeys.keys = sshKeys
-    ++ cfg.extraSshKeys;
+    networking.tempAddresses = "disabled";
+
+    networking.interfaces.eth0.ipv4.addresses = [ {
+      address = cfg.staticIpv4;
+      prefixLength = 24;
+    } ];
+
+    networking.interfaces.eth1.useDHCP = lib.mkIf cfg.enableDevelopmentNetworkInterface (true);
+
+    networking.defaultGateway = lib.mkIf (cfg.ipv4DefaultDateway != null) (cfg.ipv4DefaultDateway);
+
+    networking.nameservers = [ cfg.dnsServer ];
+
+    users.users.root.openssh.authorizedKeys.keys = sshKeys
+      ++ cfg.extraSshKeys;
+  };
 }
