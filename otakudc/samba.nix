@@ -6,6 +6,16 @@ let
   samba = cfg.package;
   nssModulesPath = config.system.nssModules.path;
 in {
+  # Windows seems to want to do NTP against the DC, noticed
+  # this while wiresharking
+  services.openntpd.enable = true;
+
+  # https://wiki.samba.org/index.php/Samba_AD_DC_Port_Usage
+  networking.firewall.interfaces.eth0.allowedUDPPorts = [ 53 88 123 137 138 389 464 ];
+  networking.firewall.interfaces.eth0.allowedTCPPorts = [ 53 88 135 139 389 445 464 636 3268 3269 ];
+  # Dynamic RPC Ports
+  networking.firewall.allowedTCPPortRanges = [ { from = 49152; to = 65535; } ];
+
   # https://nixos.wiki/wiki/Samba
   # Disable resolveconf, we're using Samba internal DNS backend
   systemd.services.resolvconf.enable = false;
@@ -39,6 +49,7 @@ in {
 
   services.samba = {
     enable = true;
+    openFirewall = true;
     enableNmbd = false;
     enableWinbindd = false;
     configText = ''
