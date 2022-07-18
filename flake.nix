@@ -102,6 +102,7 @@
               overlays = builtins.attrValues self.overlays;
             };
             hostname = "172.17.51.242";
+            magicRollback = true; # set to false when changing net config
             format = "proxmox-lxc";
           };
           lancache = rec {
@@ -125,6 +126,7 @@
               overlays = builtins.attrValues self.overlays;
             };
             hostname = "172.17.51.249";
+            magicRollback = true; # set to false when changing net config
             format = "proxmox-lxc";
           };
         };
@@ -142,24 +144,22 @@
         # we aren't using the nixosSystem from the target nixpkgs but it likely doesn't matter
         generateNixosSystems = builtins.mapAttrs (name: system:
           lib.nixosSystem {
-            system = system.system;
+            inherit (system) system pkgs;
             modules = system.modules ++ [ ./common.nix ];
-            pkgs = system.pkgs;
           });
 
         generateVmImages = systems:
           lib.mapAttrsToList (name: system: {
             ${system.system}.${name} = (nixos-generators.nixosGenerate {
+              inherit (system) pkgs format;
               modules = system.modules ++ [ ./common.nix ];
-              pkgs = system.pkgs;
-              format = system.format;
             });
           }) systems;
 
         generateDeployRsProfiles = systems:
           lib.mapAttrsToList (name: system: {
             nodes.${name} = {
-              hostname = system.hostname;
+              inherit (system) hostname magicRollback;
               profiles.system = {
                 sshUser = "root";
                 user = "root";
