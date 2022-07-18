@@ -51,6 +51,10 @@ in {
     programs.zsh.enable = true;
     users.defaultUserShell = pkgs.zsh;
 
+    environment.systemPackages = with pkgs; [
+      # for dig
+      bind
+    ];
 
     # Service Discovery
     services.lldpd.enable = true;
@@ -65,6 +69,7 @@ in {
         workstation = true;
       };
     };
+
     networking.tempAddresses = "disabled";
 
     networking.interfaces.eth0.ipv4.addresses = [ {
