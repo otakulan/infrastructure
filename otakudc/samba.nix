@@ -63,6 +63,11 @@ in {
           server role = active directory domain controller
           workgroup = ${config.env.activeDirectory.workgroup}
           idmap_ldb:use rfc2307 = yes
+          # Only bind to the production interface, this is to prevent
+          # the DNS updater from polluting the DNS with bad records from
+          # random network interfaces
+          bind interfaces only = yes                                                                                                   
+          interfaces = lo eth0
 
       [netlogon]
           path = /var/lib/samba/sysvol/${config.env.activeDirectory.domain}/scripts
