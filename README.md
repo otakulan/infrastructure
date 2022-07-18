@@ -96,6 +96,7 @@ Record deleted successfully
 
 ## Troubleshooting
 
+### First-time deploy
 When running `deploy-rs` on a freshly-deployed contianer on proxmox, the first run will fail with this nondescript error:
 ```
 WARNING: /boot being on a different filesystem not supported by init-script-builder.sh
@@ -114,3 +115,13 @@ hostname = "172.17.51.249"
 ssh_opts = []
 ```
 Then, `ssh` into the container and run `<path>/bin/switch-to-configuration boot` and then run `reboot` to reboot the container. Subsequent deploys will work without a hitch. I have no idea what causes this, I will need to file an upstream bug.
+
+### GPOs fail to apply in windows
+
+If `gpupdate /force` fails to run because of permission issues on the the GPOs, `ssh` into `otakudc` and use the following tools to check and reset the ACLs on the sysvol share.
+
+```
+root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolcheck
+[...]
+root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolreset
+```
