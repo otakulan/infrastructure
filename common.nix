@@ -51,6 +51,20 @@ in {
     programs.zsh.enable = true;
     users.defaultUserShell = pkgs.zsh;
 
+
+    # Service Discovery
+    services.lldpd.enable = true;
+    services.avahi = {
+      enable = true;
+      nssmdns = true;
+      ipv4 = true;
+      ipv6 = true;
+      publish = {
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
     networking.tempAddresses = "disabled";
 
     networking.interfaces.eth0.ipv4.addresses = [ {
