@@ -125,3 +125,8 @@ root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolcheck
 [...]
 root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolreset
 ```
+```
+root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolcheck
+[...]
+root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolreset
+```
