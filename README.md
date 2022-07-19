@@ -148,9 +148,3 @@ ip ssh version 2
 1. Enable the `cisco-config` `devShell` using `nix develop .#cisco-config`.
 2. Enter the `cisco-config` folder.
 3. Run `python deploy-configs.py`.
-
-```
-root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolcheck
-[...]
-root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolreset
-```
