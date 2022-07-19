@@ -11,13 +11,16 @@
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
+    poetry2nix.url = "github:nix-community/poetry2nix";
+    poetry2nix.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = inputs@{ self, nixpkgs, flake-utils, sops-nix, deploy-rs
-    , nixos-generators, ... }:
+    , nixos-generators, poetry2nix, ... }:
     let platforms = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
     in {
       overlays = {
         inputs = final: prev: { inherit inputs; };
+        poetry2nix = poetry2nix.overlay;
         samba-ad-dc = (final: prev: {
           # Rebuild Samba with LDAP, MDNS and Domain Controller support
           samba = prev.samba.override {
@@ -39,8 +42,8 @@
         deploy-rs = inputs.deploy-rs.defaultPackage.${system};
       in {
 
-        devShells = { default = pkgs.mkShell {
-          name = "iac-infra";
+        devShells.default = pkgs.mkShell {
+          name = "otakulan-infra";
 
           nativeBuildInputs = [ sops-nix.sops-import-keys-hook ];
 
@@ -68,7 +71,30 @@
             # set +a
           '';
         };
-      };}) // (let
+
+        devShells.cisco-configs = pkgs.mkShell {
+          name = "cisco-configs";
+          buildInputs = with pkgs; [
+            (pkgs.poetry2nix.mkPoetryEnv {
+              projectDir = ./cisco-configs;
+              overrides = (
+                let poetryOverride =
+                  (old: {
+                    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.poetry ];
+                  });
+                in pkgs.poetry2nix.overrides.withDefaults (self: super: {
+                  # Need to upstream this...
+                  # https://github.com/nix-community/poetry2nix/blob/master/overrides/build-systems.json
+                  netutils = super.netutils.overridePythonAttrs poetryOverride;
+                  ttp = super.ttp.overridePythonAttrs poetryOverride;
+                  ttp-templates = super.ttp-templates.overridePythonAttrs poetryOverride;
+                })
+              );
+            })
+            poetry
+          ];
+        };
+      }) // (let
         systems = {
           otakudc = rec {
             system = "x86_64-linux";

@@ -125,6 +125,30 @@ root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolcheck
 [...]
 root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolreset
 ```
+
+## Deploying configurations to cisco switches (wip/to be tested on real hardware)
+
+Before starting, the switch must be accessible via SSH. If the switch hasn't been configured yet, it must be hooked up via a console cable and configured with a management interface, SSH host keys and an ssh server enabled. This is mostly an excercise left to the reader but something like this should do:
+
+```
+ip default-gateway 172.16.2.1
+int vlan 30
+ip address 172.16.2.xxx 255.255.255.0
+conf t
+crypto key generate rsa
+! Go get a coffee/tea while this runs
+line vty 0 4
+transport input ssh
+login local
+password xxxxxxx
+exit
+ip ssh version 2
+```
+
+1. Enable the `cisco-config` `devShell` using `nix develop .#cisco-config`.
+2. Enter the `cisco-config` folder.
+3. Run `python deploy-configs.py`.
+
 ```
 root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolcheck
 [...]
