@@ -1,0 +1,366 @@
+!
+! No configuration change since last restart
+!
+version 15.0
+no service pad
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+!
+hostname OTLAN-D{{ index }}
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging buffered 16384 notifications
+logging monitor informational
+enable secret 9 {{ enable_scret }}
+!
+username admin privilege 15 secret 9 {{ admin_secret }}
+aaa new-model
+!
+!
+aaa authentication attempts login 4
+aaa authentication login default local
+!
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone EST -5 0
+clock summer-time edt recurring
+system mtu routing 1500
+no ip domain-lookup
+ip domain-name admin.otakulan.net
+ip host tftp 172.16.2.2
+!
+ip dhcp bootp ignore
+!
+!
+ip dhcp snooping vlan 5,10,31-34
+ip dhcp snooping
+!
+!
+!
+!
+!
+!
+!
+!
+errdisable recovery cause udld
+errdisable recovery cause bpduguard
+errdisable recovery cause security-violation
+errdisable recovery cause channel-misconfig (STP)
+errdisable recovery cause pagp-flap
+errdisable recovery cause dtp-flap
+errdisable recovery cause link-flap
+errdisable recovery cause sfp-config-mismatch
+errdisable recovery cause gbic-invalid
+errdisable recovery cause l2ptguard
+errdisable recovery cause psecure-violation
+errdisable recovery cause port-mode-failure
+errdisable recovery cause dhcp-rate-limit
+errdisable recovery cause pppoe-ia-rate-limit
+errdisable recovery cause mac-limit
+errdisable recovery cause vmps
+errdisable recovery cause storm-control
+errdisable recovery cause inline-power
+errdisable recovery cause arp-inspection
+errdisable recovery cause loopback
+errdisable recovery cause small-frame
+errdisable recovery cause psp
+errdisable recovery interval 60
+memory reserve critical 4096
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+lldp run
+!
+ip tftp source-interface Vlan10
+ip ssh source-interface Vlan10
+ip ssh rsa keypair-name sshkeys
+ip ssh version 2
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ description OTLAN-PF Uplink
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,31-34
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ load-interval 60
+ spanning-tree portfast trunk
+ ip dhcp snooping trust
+!
+interface Port-channel2
+ description OTLAN-AXS1 Uplink
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,31
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ load-interval 60
+ spanning-tree portfast trunk
+ ip dhcp snooping trust
+!
+interface Port-channel3
+ description OTLAN-AXS2 Uplink
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,32
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ load-interval 60
+ spanning-tree portfast trunk
+ ip dhcp snooping trust
+!
+interface Port-channel4
+ description OTLAN-AXS3 Uplink
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,33
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ load-interval 60
+ spanning-tree portfast trunk
+ ip dhcp snooping trust
+!
+interface Port-channel5
+ description OTLAN-AXS4 Uplink
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,34
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ load-interval 60
+ spanning-tree portfast trunk
+ ip dhcp snooping trust
+!
+interface Port-channel6
+ description OTLAN-CACHE
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ load-interval 60
+ spanning-tree portfast trunk
+!
+interface GigabitEthernet0/1
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,31-34
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 1 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/2
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,31-34
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 1 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/3
+ shutdown
+!
+interface GigabitEthernet0/4
+ description AP
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 5
+ switchport trunk allowed vlan 5,10
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree portfast trunk
+!
+interface GigabitEthernet0/5
+ shutdown
+!
+interface GigabitEthernet0/6
+ shutdown
+!
+interface GigabitEthernet0/7
+ shutdown
+!
+interface GigabitEthernet0/8
+ shutdown
+!
+interface GigabitEthernet0/9
+ shutdown
+!
+interface GigabitEthernet0/10
+ shutdown
+!
+interface GigabitEthernet0/11
+ shutdown
+!
+interface GigabitEthernet0/12
+ shutdown
+!
+interface GigabitEthernet0/13
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,31
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 2 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/14
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,31
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 2 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/15
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,32
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 3 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/16
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,32
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 3 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/17
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,33
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 4 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/18
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,33
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 4 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/19
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,34
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 5 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/20
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 5,10,34
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-group 5 mode active
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/21
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ channel-group 6 mode active
+!
+interface GigabitEthernet0/22
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ channel-group 6 mode active
+!
+interface GigabitEthernet0/23
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ channel-group 6 mode active
+!
+interface GigabitEthernet0/24
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ channel-group 6 mode active
+!
+interface GigabitEthernet0/25
+ shutdown
+!
+interface GigabitEthernet0/26
+ shutdown
+!
+interface GigabitEthernet0/27
+ shutdown
+!
+interface GigabitEthernet0/28
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ ip address 172.16.2.30 255.255.255.0
+!
+ip default-gateway 172.16.2.1
+no ip http server
+no ip http secure-server
+!
+!
+ip default-network 172.16.2.1
+!
+logging host 172.16.2.2
+access-list 99 permit 172.16.2.2
+no cdp run
+!
+snmp-server community READONLY RO 99
+!
+!
+!
+no vstack
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line vty 0 4
+ exec-timeout 30 0
+ logging synchronous
+ transport input ssh
+line vty 5 15
+ exec-timeout 30 0
+ logging synchronous
+ transport input ssh
+!
+ntp server 172.16.2.1
+end
