@@ -54,6 +54,9 @@ in {
     environment.systemPackages = with pkgs; [
       # for dig
       bind
+      inetutils
+      vim
+      tcpdump
     ];
 
     # Service Discovery
