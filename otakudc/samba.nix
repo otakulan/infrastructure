@@ -4,7 +4,6 @@ with lib;
 let
   cfg = config.services.samba;
   samba = cfg.package;
-  nssModulesPath = config.system.nssModules.path;
 in {
   options.activeDirectory = {
     domain = mkOption {

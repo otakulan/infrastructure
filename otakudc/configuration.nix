@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./env.nix
     ./hardware.nix
     ./samba.nix
   ];

@@ -101,12 +101,12 @@
             modules = [
               ./otakudc/configuration.nix
               {
+                config.activeDirectory = {
+                  domain = "otakulan.net";
+                  workgroup = "OTAKULAN";
+                  netbiosName = "OTAKUDC";
+                };
                 config.env = {
-                  activeDirectory = {
-                    domain = "otakulan.net";
-                    workgroup = "OTAKULAN";
-                    netbiosName = "OTAKUDC";
-                  };
                   # Samba runs its own DNS server on the static IP
                   # which pfSense distributes to clients. This allows
                   # resolving names in active directory. We then forward
