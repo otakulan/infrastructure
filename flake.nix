@@ -203,6 +203,7 @@
           lib.nixosSystem {
             inherit (system) system pkgs;
             modules = system.modules ++ [ ./common.nix ];
+            specialArgs = { inherit inputs; };
           });
 
         generateVmImages = systems:
@@ -210,6 +211,7 @@
             ${system.system}.${name} = (nixos-generators.nixosGenerate {
               inherit (system) pkgs format;
               modules = system.modules ++ [ ./common.nix ];
+              specialArgs = { inherit inputs; };
             });
           }) systems;
 
