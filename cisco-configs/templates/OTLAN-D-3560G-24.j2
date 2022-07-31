@@ -17,7 +17,7 @@ boot-end-marker
 !
 logging buffered 16384 notifications
 logging monitor informational
-enable secret 9 {{ enable_scret }}
+enable secret 9 {{ enable_secret }}
 !
 username admin privilege 15 secret 9 {{ admin_secret }}
 aaa new-model
@@ -25,6 +25,7 @@ aaa new-model
 !
 aaa authentication attempts login 4
 aaa authentication login default local
+aaa authorization exec default local none
 !
 !
 !
@@ -76,7 +77,8 @@ errdisable recovery cause small-frame
 errdisable recovery cause psp
 errdisable recovery interval 60
 memory reserve critical 4096
-!
+archive
+ path flash:config-backup
 spanning-tree mode rapid-pvst
 spanning-tree extend system-id
 !
