@@ -117,8 +117,8 @@
                   staticIpv4 = "172.16.2.3";
                   # Default gateway not set since we will use the one 
                   # provided via DHCP on the development interface
-                  # ipv4DefaultDateway = "172.16.2.1";
-                  enableDevelopmentNetworkInterface = true;
+                  ipv4DefaultDateway = "172.16.2.1";
+                  enableDevelopmentNetworkInterface = false;
                 };
               }
             ];
@@ -126,8 +126,8 @@
               inherit system;
               overlays = builtins.attrValues self.overlays;
             };
-            # hostname = "172.16.2.3";
-            hostname = "172.17.51.252";
+            hostname = "172.16.2.3";
+            # hostname = "172.17.51.252";
             magicRollback = true; # set to false when changing net config
             format = "proxmox-lxc";
           };
@@ -139,13 +139,13 @@
                 config.env = {
                   # Set to a test ip, will need to be changed to the
                   # lancache dns server
-                  # dnsServer = "172.16.2.1";
-                  dnsServer = "172.17.51.1";
+                  dnsServer = "172.16.2.1";
+                  # dnsServer = "172.17.51.1";
                   staticIpv4 = "172.16.2.2";
                   # Default gateway not set since we will use the one 
                   # provided via DHCP on the development interface
-                  # ipv4DefaultDateway = "172.16.2.1";
-                  enableDevelopmentNetworkInterface = true;
+                  ipv4DefaultDateway = "172.16.2.1";
+                  enableDevelopmentNetworkInterface = false;
                 };
               }
             ];
@@ -153,8 +153,8 @@
               inherit system;
               overlays = builtins.attrValues self.overlays;
             };
-            # hostname = "172.16.2.2";
-            hostname = "172.17.51.251";
+            hostname = "172.16.2.2";
+            # hostname = "172.17.51.251";
             magicRollback = true; # set to false when changing net config
             format = "proxmox-lxc";
           };
@@ -166,13 +166,13 @@
                 config.env = {
                   # Set to a test ip, will need to be changed to the
                   # lancache dns server
-                  # dnsServer = "172.16.2.1";
-                  dnsServer = "172.17.51.1";
+                  dnsServer = "172.16.2.1";
+                  # dnsServer = "172.17.51.1";
                   staticIpv4 = "172.16.2.5";
                   # Default gateway not set since we will use the one
                   # provided via DHCP on the development interface
-                  # ipv4DefaultDateway = "172.16.2.1";
-                  enableDevelopmentNetworkInterface = true;
+                  ipv4DefaultDateway = "172.16.2.1";
+                  enableDevelopmentNetworkInterface = false;
                 };
               }
               sops-nix.nixosModules.sops
@@ -181,8 +181,8 @@
               inherit system;
               overlays = builtins.attrValues self.overlays;
             };
-            # hostname = "172.16.2.2";
-            hostname = "172.17.51.200";
+            hostname = "172.16.2.5";
+            # hostname = "172.17.51.200";
             magicRollback = true; # set to false when changing net config
             format = "proxmox-lxc";
           };
@@ -194,8 +194,8 @@
                 config.env = {
                   # Set to a test ip, will need to be changed to the
                   # lancache dns server
-                  # dnsServer = "172.16.2.1";
-                  dnsServer = "172.17.51.1";
+                  dnsServer = "172.16.2.1";
+                  # dnsServer = "172.17.51.1";
                   staticIpv4 = "172.16.2.6";
                   # Default gateway not set since we will use the one
                   # provided via DHCP on the development interface
@@ -209,9 +209,9 @@
               inherit system;
               overlays = builtins.attrValues self.overlays;
             };
-            # hostname = "172.16.2.2";
-            hostname = "172.17.51.200";
-            magicRollback = true; # set to false when changing net config
+            hostname = "172.16.2.6";
+            # hostname = "172.17.51.249";
+            magicRollback = false; # set to false when changing net config
             format = "proxmox-lxc";
           };
         };
