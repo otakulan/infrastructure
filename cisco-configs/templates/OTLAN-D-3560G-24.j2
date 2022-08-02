@@ -38,7 +38,7 @@ clock summer-time edt recurring
 system mtu routing 1500
 no ip domain-lookup
 ip domain-name admin.otakulan.net
-ip host tftp 172.16.2.2
+ip host tftp 172.16.2.1
 !
 ip dhcp bootp ignore
 !
@@ -89,7 +89,7 @@ ip tftp source-interface Vlan10
 ip ssh source-interface Vlan10
 ip ssh rsa keypair-name sshkeys
 ip ssh version 2
-!
+ip scp server enable
 ! 
 !
 !
@@ -342,8 +342,8 @@ no ip http secure-server
 !
 ip default-network 172.16.2.1
 !
-logging host 172.16.2.2
-access-list 99 permit 172.16.2.2
+logging host 172.16.2.5
+access-list 99 permit 172.16.2.5
 no cdp run
 !
 snmp-server community READONLY RO 99
