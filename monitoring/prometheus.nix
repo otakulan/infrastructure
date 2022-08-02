@@ -6,7 +6,22 @@ with lib;
     services.prometheus = {
       enable = true;
       port = 9090;
-      scrapeConfigs = [
+      scrapeConfigs = let
+        mkRelabelConfigs = port: [
+          {
+            source_labels = [ "__address__" ];
+            target_label = "__param_target";
+          }
+          {
+            source_labels = [ "__param_target" ];
+            target_label = "instance";
+          }
+          {
+            target_label = "__address__";
+            replacement = "localhost:${toString port}";
+          }
+        ];
+        in [
         {
           job_name = "node";
           scrape_interval = "1m";
@@ -33,6 +48,7 @@ with lib;
               # "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" 
             ];
           }];
+          relabel_configs = mkRelabelConfigs 9115;
         }
         {
           job_name = "icmp_probe";
@@ -48,6 +64,7 @@ with lib;
               "1.1.1.1" # Cloudflare
             ];
           }];
+          relabel_configs = mkRelabelConfigs 9115;
         }
         {
           job_name = "snmp_network";
@@ -63,6 +80,7 @@ with lib;
               "172.16.2.34" # OTLAN-AXS4
             ];
           }];
+          relabel_configs = mkRelabelConfigs 9116;
         }
       ];
     };
