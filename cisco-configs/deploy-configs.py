@@ -47,9 +47,7 @@ logger.info("Starting switch deployment")
 for switch in switches:
   logger.info("Preparing switch")
   template = env.get_template(switch.template)
-  print(template.render(vars(switch)))
   cisco_config = template.render(vars(switch))
-  # print(cisco_config)
   driver = get_network_driver('ios')
   # device = driver('172.17.51.253', 'admin', 'ultraconfig', optional_args={'transport': 'telnet', 'port': 5000}) # GNS3 Testing
   device = driver(switch.ssh_address, 'admin', admin_password, timeout=300, optional_args={'secret':admin_password})
