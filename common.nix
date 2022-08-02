@@ -92,9 +92,10 @@ in {
       ++ cfg.extraSshKeys;
 
     services.prometheus.exporters.node = {
+      enable = true;
       openFirewall = true;
-      listenAddress = "::";
-      enabledCollectors = [ "interrupts" "systemd" "tcpstat" "perf" "processes" ];
+      listenAddress = "[::]";
+      enabledCollectors = [ "interrupts" "systemd" "tcpstat" "processes" ];
       port = 9091;
     };
 
