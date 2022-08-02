@@ -73,6 +73,8 @@ in {
       };
     };
 
+    networking.useDHCP = false;
+
     networking.tempAddresses = "disabled";
 
     networking.interfaces.eth0.ipv4.addresses = [ {
