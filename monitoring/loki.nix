@@ -68,6 +68,7 @@ in {
       enable = true;
       configuration = {
         server = {
+          http_listen_address = "[::]";
           http_listen_port = 3100;
         };
 
