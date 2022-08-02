@@ -30,6 +30,8 @@ with lib;
               # To be changed to DNS aliases
               "172.16.2.2:${toString config.services.prometheus.exporters.node.port}" # lancache
               "172.16.2.3:${toString config.services.prometheus.exporters.node.port}" # otakudc
+              # "172.16.2.4:${toString config.services.prometheus.exporters.node.port}" # fogproject
+              "172.16.2.6:${toString config.services.prometheus.exporters.node.port}" # builder
               "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" # monitoring
               # "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" 
             ];
