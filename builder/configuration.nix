@@ -3,7 +3,6 @@
 {
   imports = [
     ./hardware.nix
-    ./nix.nix
   ];
   
   networking.hostName = "builder";
