@@ -131,6 +131,7 @@ root@otakudc:/var/lib/samba/ > samba-tool ntacl sysvolreset
 Before starting, the switch must be accessible via SSH. If the switch hasn't been configured yet, it must be hooked up via a console cable and configured with a management interface, SSH host keys and an ssh server enabled. This is mostly an excercise left to the reader but something like this should do:
 
 ```
+conf t
 ip default-gateway 172.16.2.1
 int vlan 10
 ip address 172.16.2.xxx 255.255.255.0
@@ -146,14 +147,11 @@ aaa new-model
 aaa authentication attempts login 4
 aaa authentication login default local
 aaa authorization exec default local none
-exit
 archive
 path flash:config-backup
 exit
-ip ssh version 2
-exit
 ip scp server enable
-exit
+ip ssh version 2
 ```
 
 1. Enable the `cisco-config` `devShell` using `nix develop .#cisco-config`.
