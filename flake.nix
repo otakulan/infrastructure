@@ -192,6 +192,9 @@
               ./builder/configuration.nix
               {
                 config.env = {
+                  extraSshKeys = [
+                    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZxPYKNECyOZ1llRiRdDXljH6WE1v7mB12b5bqjF9RZ"
+                  ];
                   # Set to a test ip, will need to be changed to the
                   # lancache dns server
                   dnsServer = "172.16.2.1";
