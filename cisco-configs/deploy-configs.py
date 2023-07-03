@@ -31,10 +31,10 @@ admin_secret = os.getenv("CISCO_ADMIN_SECRET")
 admin_password = os.getenv("CISCO_ADMIN_PASSWORD")
 
 switches = [
-  AccessSwitch("172.16.2.31", "OTLAN-AXS-3560G-48.j2", 1, 31, enable_secret, admin_secret), # OTLAN-AXS1
-  AccessSwitch("172.16.2.32", "OTLAN-AXS-3560G-48.j2", 2, 32, enable_secret, admin_secret), # OTLAN-AXS2
-  AccessSwitch("172.16.2.33", "OTLAN-AXS-3560G-48.j2", 3, 33, enable_secret, admin_secret), # OTLAN-AXS3
-  AccessSwitch("172.16.2.34", "OTLAN-AXS-2960G-24.j2", 4, 34, enable_secret, admin_secret), # OTLAN-AXS4
+  AccessSwitch("172.16.2.31", "OTLAN-AXS-3560G-48.j2", 1, 30, enable_secret, admin_secret), # OTLAN-AXS1
+  AccessSwitch("172.16.2.32", "OTLAN-AXS-3560G-48.j2", 2, 30, enable_secret, admin_secret), # OTLAN-AXS2
+  AccessSwitch("172.16.2.33", "OTLAN-AXS-3560G-48.j2", 3, 30, enable_secret, admin_secret), # OTLAN-AXS3
+  AccessSwitch("172.16.2.34", "OTLAN-AXS-2960G-24.j2", 4, 30, enable_secret, admin_secret), # OTLAN-AXS4
   Switch("172.16.2.30", "OTLAN-D-3560G-24.j2", 1, enable_secret, admin_secret), # OTLAN-D1
 ]
 

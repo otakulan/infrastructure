@@ -43,7 +43,7 @@ ip host tftp 172.16.2.1
 ip dhcp bootp ignore
 !
 !
-ip dhcp snooping vlan 5,10,31-34
+ip dhcp snooping vlan 5,10,30
 ip dhcp snooping
 !
 !
@@ -106,7 +106,7 @@ ip scp server enable
 interface Port-channel1
  description Uplink - 2-Port Etherchannel
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31-34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -116,7 +116,7 @@ interface Port-channel1
 !
 interface GigabitEthernet0/1
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31-34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -125,7 +125,7 @@ interface GigabitEthernet0/1
 !
 interface GigabitEthernet0/2
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31-34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust

@@ -43,7 +43,7 @@ ip host tftp 172.16.2.1
 ip dhcp bootp ignore
 !
 !
-ip dhcp snooping vlan 5,10,31-34
+ip dhcp snooping vlan 5,10,30
 ip dhcp snooping
 !
 !
@@ -106,7 +106,7 @@ ip scp server enable
 interface Port-channel1
  description OTLAN-PF Uplink
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31-34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -117,7 +117,7 @@ interface Port-channel1
 interface Port-channel2
  description OTLAN-AXS1 Uplink
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -128,7 +128,7 @@ interface Port-channel2
 interface Port-channel3
  description OTLAN-AXS2 Uplink
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,32
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -139,7 +139,7 @@ interface Port-channel3
 interface Port-channel4
  description OTLAN-AXS3 Uplink
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,33
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -150,7 +150,7 @@ interface Port-channel4
 interface Port-channel5
  description OTLAN-AXS4 Uplink
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -168,7 +168,7 @@ interface Port-channel6
 !
 interface GigabitEthernet0/1
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31-34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -177,7 +177,7 @@ interface GigabitEthernet0/1
 !
 interface GigabitEthernet0/2
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31-34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -222,7 +222,7 @@ interface GigabitEthernet0/12
 !
 interface GigabitEthernet0/13
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -231,7 +231,7 @@ interface GigabitEthernet0/13
 !
 interface GigabitEthernet0/14
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,31
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -240,7 +240,7 @@ interface GigabitEthernet0/14
 !
 interface GigabitEthernet0/15
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,32
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -249,7 +249,7 @@ interface GigabitEthernet0/15
 !
 interface GigabitEthernet0/16
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,32
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -258,7 +258,7 @@ interface GigabitEthernet0/16
 !
 interface GigabitEthernet0/17
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,33
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -267,7 +267,7 @@ interface GigabitEthernet0/17
 !
 interface GigabitEthernet0/18
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,33
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -276,7 +276,7 @@ interface GigabitEthernet0/18
 !
 interface GigabitEthernet0/19
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
@@ -285,7 +285,7 @@ interface GigabitEthernet0/19
 !
 interface GigabitEthernet0/20
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 5,10,34
+ switchport trunk allowed vlan 5,10,30
  switchport mode trunk
  switchport nonegotiate
  ip arp inspection trust
