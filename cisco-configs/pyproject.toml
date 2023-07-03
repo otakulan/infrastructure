@@ -8,6 +8,7 @@ authors = ["Tristan Gosselin-Hane <starcraft66@gmail.com>"]
 python = "^3.10"
 napalm = "^4.0.0"
 Jinja2 = "^3.1.2"
+setuptools = "^68.0.0"
 
 [tool.poetry.dev-dependencies]
 
