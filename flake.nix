@@ -1,10 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    release-2211.url = "github:nixos/nixpkgs/release-22.11";
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
     flake-utils.url = "github:numtide/flake-utils";
-    flake-utils.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.url = "github:serokell/deploy-rs";
@@ -54,7 +54,6 @@
           buildInputs = with pkgs; [
             jq
             git
-            nix
             nixfmt
             terraform_1
             sops
