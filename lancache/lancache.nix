@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
+  networking.firewall.interfaces.eth0.allowedUDPPorts = [ 53 ];
+  networking.firewall.interfaces.eth0.allowedTCPPorts = [ 53 80 443 ];
   virtualisation.oci-containers = {
     backend = "podman";
     containers = {
@@ -19,6 +21,8 @@
           CACHE_INDEX_SIZE = "250m";
           # Half a year
           CACHE_MAX_AGE = "180d";
+          # Battle.net slow speed fix
+          CACHE_SLICE_SIZE="8m";
           TZ = "America/Toronto";
         };
       };
