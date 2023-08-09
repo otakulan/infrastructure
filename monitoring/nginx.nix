@@ -7,9 +7,9 @@ with lib;
     services.nginx = {
       enable = true;
       virtualHosts = {
-        ${config.services.grafana.domain} = {
+        ${config.services.grafana.settings.server.domain} = {
           locations."/" = {
-            proxyPass = "http://localhost:${toString config.services.grafana.port}";
+            proxyPass = "http://localhost:${toString config.services.grafana.settings.server.http_port}";
             proxyWebsockets = true;
           };
         };

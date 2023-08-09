@@ -1,13 +1,15 @@
 { config, pkgs, lib, ... }:
 
 with lib;
-{
+{ 
   config = {
     services.grafana = {
       enable = true;
-      domain = "monitoring.otakulan.net";
-      port = 3000;
-      addr = "::1";
+      settings.server = {
+        domain = "monitoring.otakulan.net";
+        http_port = 3000;
+        http_addr = "::1";
+      };
     };
   };
 }
