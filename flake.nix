@@ -23,11 +23,15 @@
         poetry2nix = poetry2nix.overlay;
         samba-ad-dc = (final: prev: {
           # Rebuild Samba with LDAP, MDNS and Domain Controller support
-          samba = prev.samba.override {
-            enableLDAP = true;
-            enableMDNS = true;
-            enableDomainController = true;
-          };
+          samba = let
+            adSamba = prev.samba.override {
+              enableLDAP = true;
+              enableMDNS = true;
+              enableDomainController = true;
+            };
+          in adSamba.overrideAttrs (final2: prev2: {
+            pythonPath = [ prev.python3Packages.dnspython prev.python3Packages.requests prev.python3Packages.cryptography prev.tdb ];
+          });
         });
       };
     } // inputs.flake-utils.lib.eachSystem platforms (system:
