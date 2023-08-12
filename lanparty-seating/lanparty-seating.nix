@@ -17,12 +17,12 @@
         };
       };
       lanparty-seating = {
-        image = "starcraft66/lanparty-seating:latest";
+        image = "ghcr.io/starcraft66/lanparty-seating/lanparty-seating:1.0.0";
         autoStart = true;
         ports = [ "${config.env.staticIpv4}:4000:4000/tcp" ];
         environment = {
           SECRET_KEY_BASE = "nah5choh8fohnoap1ien3OoKeehei2ch";
-          DATABASE_URL = "ecto://postgres:postgres@localhost/lanpartyseating_prod";
+          DATABASE_URL = "ecto://postgres:postgres@172.16.2.7/lanpartyseating_prod";
           TZ = "America/Toronto";
         };
       };
