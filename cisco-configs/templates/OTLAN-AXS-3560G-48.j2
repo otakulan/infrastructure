@@ -76,9 +76,11 @@ errdisable recovery cause loopback
 errdisable recovery cause small-frame
 errdisable recovery cause psp
 errdisable recovery interval 60
-memory reserve critical 4096
+port-channel load-balance src-dst-ip
 archive
  path flash:config-backup
+memory reserve critical 4096
+!
 spanning-tree mode rapid-pvst
 spanning-tree extend system-id
 !
