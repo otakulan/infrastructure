@@ -58,8 +58,8 @@
           buildInputs = with pkgs; [
             jq
             git
-            nixfmt
-            terraform_1
+            nixfmt-rfc-style
+            opentofu
             sops
             yamllint
             gnupg
