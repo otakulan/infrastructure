@@ -78,9 +78,6 @@ in {
             winbind nss info = rfc2307
             idmap config * : backend = tdb
             idmap config * : range = 3000-7999
-            idmap config ${config.activeDirectory.workgroup} : backend = ad
-            idmap config ${config.activeDirectory.workgroup} : schema_mode = rfc2307
-            idmap config ${config.activeDirectory.workgroup} : range = 10000-999999
             # Only bind to the production interface, this is to prevent
             # the DNS updater from polluting the DNS with bad records from
             # random network interfaces
