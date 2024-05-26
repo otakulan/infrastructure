@@ -203,22 +203,6 @@
         "type": "github"
       }
     },
-    "release-2211": {
-      "locked": {
-        "lastModified": 1688392541,
-        "narHash": "sha256-lHrKvEkCPTUO+7tPfjIcb7Trk6k31rz18vkyqmkeJfY=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ea4c80b39be4c09702b0cb3b42eab59e2ba4f24b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "release-22.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
@@ -227,7 +211,6 @@
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs",
         "poetry2nix": "poetry2nix",
-        "release-2211": "release-2211",
         "sops-nix": "sops-nix"
       }
     },
