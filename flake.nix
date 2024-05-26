@@ -20,7 +20,7 @@
     in {
       overlays = {
         inputs = final: prev: { inherit inputs; };
-        poetry2nix = poetry2nix.overlay;
+        poetry2nix = poetry2nix.overlays.default;
         samba-ad-dc = (final: prev: {
           # Rebuild Samba with LDAP, MDNS and Domain Controller support
           samba = let
