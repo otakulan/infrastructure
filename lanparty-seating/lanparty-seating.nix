@@ -15,6 +15,9 @@
           POSTGRES_DB = "lanpartyseating_prod";
           TZ = "America/Toronto";
         };
+        volumes = [
+          "/var/lib/postgresql/data:/var/lib/postgresql/data"
+        ];
       };
       lanparty-seating = {
         image = "ghcr.io/starcraft66/lanparty-seating/lanparty-seating:1.0.0";
