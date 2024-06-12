@@ -220,6 +220,34 @@
                   magicRollback = false; # set to false when changing net config
                   format = "proxmox-lxc";
                 };
+                vpn = rec {
+                  system = "x86_64-linux";
+                  modules = [
+                    ./vpn/configuration.nix
+                    {
+                      config.env = {
+                        # Set to a test ip, will need to be changed to the
+                        # lancache dns server
+                        dnsServer = "172.16.2.1";
+                        # dnsServer = "172.17.51.1";
+                        staticIpv4 = "172.16.2.8";
+                        # Default gateway not set since we will use the one
+                        # provided via DHCP on the development interface
+                        ipv4DefaultDateway = "172.16.2.1";
+                        enableDevelopmentNetworkInterface = false;
+                      };
+                    }
+                    # sops-nix.nixosModules.sops
+                  ];
+                  pkgs = import nixpkgs {
+                    inherit system;
+                    overlays = builtins.attrValues self.overlays;
+                  };
+                  hostname = "172.16.2.8";
+                  # hostname = "172.17.51.249";
+                  magicRollback = false; # set to false when changing net config
+                  format = "proxmox-lxc";
+                };
               };
 
               inherit (nixpkgs) lib;

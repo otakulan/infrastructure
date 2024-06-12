@@ -1,9 +1,9 @@
 keys:
   - &tristan 85974506EC695392044308059D98CDACFF04FD78
-  - &proxmox f5d93389fe37e417ecb9ec8e3b2d198f7a0b474a
+  - &vpn b6439acbaeedcee31bb9ec14d2c61110c0a4eb08
 creation_rules:
-  - path_regex: secrets/proxmox.yaml$
+  - path_regex: secrets/vpn.yaml$
     key_groups:
       - pgp:
         - *tristan
-        - *proxmox
+        - *vpn
