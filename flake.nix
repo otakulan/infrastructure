@@ -292,6 +292,34 @@
                   magicRollback = false; # set to false when changing net config
                   format = "proxmox-lxc";
                 };
+                unifi-controller = rec {
+                  system = "x86_64-linux";
+                  modules = [
+                    ./unifi-controller/configuration.nix
+                    {
+                      config.env = {
+                        dnsServer = "172.16.2.1";
+                        staticIpv4 = "172.16.2.10";
+                        # Default gateway not set since we will use the one
+                        # provided via DHCP on the development interface
+                        ipv4DefaultDateway = "172.16.2.1";
+                        enableDevelopmentNetworkInterface = false;
+                      };
+                    }
+                    # sops-nix.nixosModules.sops
+                  ];
+                  pkgs = import nixpkgs {
+                    inherit system;
+                    overlays = builtins.attrValues self.overlays;
+                    config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
+                      "mongodb"
+                      "unifi-controller"
+                    ];
+                  };
+                  hostname = "172.16.2.10";
+                  magicRollback = false; # set to false when changing net config
+                  format = "proxmox-lxc";
+                };
               };
 
               inherit (nixpkgs) lib;
