@@ -57,6 +57,7 @@
                           prev.python3Packages.dnspython
                           prev.python3Packages.requests
                           prev.python3Packages.cryptography
+                          prev.python3Packages.markdown
                           prev.tdb
                         ];
                       }
@@ -75,6 +76,7 @@
                   system = "x86_64-linux";
                   modules = [
                     ./otakudc/configuration.nix
+                    ./otakudc/hardware-lxc.nix
                     {
                       config.activeDirectory = {
                         domain = "otakulan.net";
@@ -105,6 +107,48 @@
                   # hostname = "172.17.51.252";
                   magicRollback = true; # set to false when changing net config
                   format = "proxmox-lxc";
+                };
+                # the new otakudc that will replace otakudc
+                # the only difference being that the active directory
+                # forest root will start at ad.otakulan.net instead of otakulan.net
+                otakudc2 = rec {
+                  system = "x86_64-linux";
+                  modules = [
+                    ./otakudc/configuration.nix
+                    ./otakudc/hardware-vm.nix
+                    {
+                      config.activeDirectory = {
+                        domain = "ad.otakulan.net";
+                        workgroup = "OTAKULAN";
+                        netbiosName = "OTAKUDC";
+                      };
+                      config.env = {
+                        # Samba runs its own DNS server on the static IP
+                        # which pfSense distributes to clients. This allows
+                        # resolving names in active directory. We then forward
+                        # down the chain to the dns server below (the lan cache
+                        # dns) which intercepts CDNs. Finally, that server
+                        # forwards upstream.
+                        dnsServer = "172.16.2.2";
+                        staticIpv4 = "172.16.2.9";
+                        # Default gateway not set since we will use the one 
+                        # provided via DHCP on the development interface
+                        ipv4DefaultDateway = "172.16.2.1";
+                        enableDevelopmentNetworkInterface = false;
+                      };
+                    }
+                  ];
+                  pkgs = import nixpkgs {
+                    inherit system;
+                    overlays = builtins.attrValues self.overlays;
+                  };
+                  hostname = "172.16.2.9";
+                  # hostname = "172.17.51.252";
+                  magicRollback = true; # set to false when changing net config
+                  format = "proxmox"; # vm image, because samba doesn't work in lxc
+                  # When trying unprivileged lxc, samba fails to initialize the dc because uids are capped at 65535 and posix ACLs are unavailable
+                  # When trying privileged lxc, systemd shits itself and fails to start up the container due to some systemd 255+ issue
+                  # https://github.com/lxc/lxc/issues/4402
                 };
                 lancache = rec {
                   system = "x86_64-linux";

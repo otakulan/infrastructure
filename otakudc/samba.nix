@@ -20,7 +20,7 @@ in {
   config = {
     # Windows seems to want to do NTP against the DC, noticed
     # this while wiresharking
-    services.openntpd.enable = true;
+    # services.openntpd.enable = true;
 
     # https://wiki.samba.org/index.php/Samba_AD_DC_Port_Usage
     networking.firewall.interfaces.eth0.allowedUDPPorts = [ 53 88 123 137 138 389 464 ];
@@ -76,8 +76,6 @@ in {
             workgroup = ${config.activeDirectory.workgroup}
             idmap_ldb:use rfc2307 = yes
             winbind nss info = rfc2307
-            idmap config * : backend = tdb
-            idmap config * : range = 3000-7999
             # Only bind to the production interface, this is to prevent
             # the DNS updater from polluting the DNS with bad records from
             # random network interfaces
@@ -91,6 +89,23 @@ in {
         [sysvol]
             path = /var/lib/samba/sysvol
             read only = No
+
+        [lanpartyseating]
+            path = /var/lib/samba/lanpartyseating
+            read only = No
+            browsable = yes
+
+        [profiles]
+            path = /var/lib/samba/profiles
+            read only = no
+            browsable = yes
+            guest ok = no
+            create mask = 0600
+            directory mask = 0700
+            csc policy = disable
+            vfs objects = acl_xattr
+            store dos attributes = yes
+
       '';
     };
 
