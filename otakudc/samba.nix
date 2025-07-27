@@ -33,7 +33,7 @@ in {
     systemd.services.resolvconf.enable = false;
     environment.etc = {
       "resolv.conf" = {
-        text = ''
+        text = lib.mkForce ''
           search ${config.activeDirectory.domain}
           nameserver ${(builtins.elemAt config.networking.interfaces.eth0.ipv4.addresses 0).address}
         '';
@@ -64,63 +64,57 @@ in {
     services.samba = {
       enable = true;
       openFirewall = true;
-      enableNmbd = false;
-      enableWinbindd = false;
-      configText = ''
-        # Global parameters
-        [global]
-            dns forwarder = ${config.env.dnsServer}
-            netbios name = ${config.activeDirectory.netbiosName}
-            realm = ${toUpper config.activeDirectory.domain}
-            server role = active directory domain controller
-            workgroup = ${config.activeDirectory.workgroup}
-            idmap_ldb:use rfc2307 = yes
-            winbind nss info = rfc2307
-            # Only bind to the production interface, this is to prevent
-            # the DNS updater from polluting the DNS with bad records from
-            # random network interfaces
-            bind interfaces only = yes                                                                                                   
-            interfaces = lo eth0
-
-        [netlogon]
-            path = /var/lib/samba/sysvol/${config.activeDirectory.domain}/scripts
-            read only = No
-
-        [sysvol]
-            path = /var/lib/samba/sysvol
-            read only = No
-
-        [lanpartyseating]
-            path = /var/lib/samba/lanpartyseating
-            read only = No
-            browsable = yes
-
-        [profiles]
-            path = /var/lib/samba/profiles
-            read only = no
-            browsable = yes
-            guest ok = no
-            create mask = 0600
-            directory mask = 0700
-            csc policy = disable
-            vfs objects = acl_xattr
-            store dos attributes = yes
-
-      '';
-    };
-
-    services.samba = {
-      shares = {
-        profiles = {
-          comment = "Users profiles";
-          path = "/samba/profiles";
-          browseable = "no";
-          "force create mode" = "0600";
-          "force directory mode" = "0700";
-          "csc policy" = "disables";
-          "store dos attributes" = "yes";
-          "vfs objects" = "acl_attrs";
+      nmbd.enable = false;
+      winbindd.enable = false;
+      settings = {
+        global = {
+          "dns forwarder" = config.env.dnsServer;
+          "netbios name" = config.activeDirectory.netbiosName;
+          realm = (toUpper config.activeDirectory.domain);
+          "server role" = "active directory domain controller";
+          workgroup = config.activeDirectory.workgroup;
+          "idmap_ldb:use rfc2307" = "yes";
+          "winbind nss info" = "rfc2307";
+          # Only bind to the production interface, this is to prevent
+          # the DNS updater from polluting the DNS with bad records from
+          # random network interfaces
+          "bind interfaces only" = "yes";                                                                                                   
+          "interfaces" = "lo eth0";
         };
+        netlogon = {
+          path = "/var/lib/samba/sysvol/${config.activeDirectory.domain}/scripts";
+          "read only" = "No";
+        };
+        sysvol = {
+          path = "/var/lib/samba/sysvol";
+          "read only" = "No";
+        };
+        lanpartyseating = {
+          path = "/var/lib/samba/lanpartyseating";
+          "read only" = "No";
+          "browsable" = "yes";
+        };
+        profiles = {
+          path = "/var/lib/samba/profiles";
+          "read only" = "no";
+          "browsable" = "yes";
+          "guest ok" = "no";
+          "create mask" = "0600";
+          "directory mask" = "0700";
+          "csc policy" = "disable";
+          "vfs objects" = "acl_xattr";
+          "store dos attributes" = "yes";
+        };
+        # profiles = {
+        #   comment = "Users profiles";
+        #   path = "/samba/profiles";
+        #   browseable = "no";
+        #   "force create mode" = "0600";
+        #   "force directory mode" = "0700";
+        #   "csc policy" = "disables";
+        #   "store dos attributes" = "yes";
+        #   "vfs objects" = "acl_attrs";
+        # };
         software = {
           path = "/samba/software";
           "read only" = "no";

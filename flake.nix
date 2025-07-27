@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -129,7 +129,8 @@
                         # down the chain to the dns server below (the lan cache
                         # dns) which intercepts CDNs. Finally, that server
                         # forwards upstream.
-                        dnsServer = "172.16.2.2";
+                        # dnsServer = "172.16.2.2";
+                        dnsServer = "172.16.2.1";
                         staticIpv4 = "172.16.2.9";
                         # Default gateway not set since we will use the one 
                         # provided via DHCP on the development interface
@@ -144,7 +145,7 @@
                   };
                   hostname = "172.16.2.9";
                   # hostname = "172.17.51.252";
-                  magicRollback = true; # set to false when changing net config
+                  magicRollback = false; # set to false when changing net config
                   format = "proxmox"; # vm image, because samba doesn't work in lxc
                   # When trying unprivileged lxc, samba fails to initialize the dc because uids are capped at 65535 and posix ACLs are unavailable
                   # When trying privileged lxc, systemd shits itself and fails to start up the container due to some systemd 255+ issue
@@ -417,7 +418,7 @@
                 yamllint
                 gnupg
                 ssh-to-pgp
-                deploy-rs.defaultPackage.${system}
+                deploy-rs.packages.${system}.default
               ];
 
               shellHook = ''
